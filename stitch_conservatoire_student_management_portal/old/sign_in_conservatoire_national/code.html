@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Conservatoire National</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Public Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dbd9d9",
+                        "on-tertiary-fixed": "#151c22",
+                        "on-surface-variant": "#43474f",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#a9c7ff",
+                        "on-secondary-fixed": "#001b3d",
+                        "tertiary-fixed": "#dce3eb",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "on-secondary-fixed-variant": "#00468c",
+                        "primary-container": "#003366",
+                        "tertiary-container": "#2d343a",
+                        "tertiary": "#181f25",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#efeded",
+                        "surface-container-highest": "#e4e2e2",
+                        "on-primary-fixed": "#001b3c",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-bright": "#fbf9f8",
+                        "on-tertiary-container": "#959ca4",
+                        "inverse-on-surface": "#f2f0f0",
+                        "surface-container-high": "#eae8e7",
+                        "on-tertiary-fixed-variant": "#40484e",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary": "#001e40",
+                        "surface-tint": "#3a5f94",
+                        "surface-container-low": "#f5f3f3",
+                        "tertiary-fixed-dim": "#c0c7cf",
+                        "on-primary-container": "#799dd6",
+                        "secondary": "#005db6",
+                        "inverse-surface": "#303030",
+                        "on-surface": "#1b1c1c",
+                        "on-secondary-container": "#00376f",
+                        "background": "#fbf9f8",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-background": "#1b1c1c",
+                        "surface-variant": "#e4e2e2",
+                        "on-error": "#ffffff",
+                        "surface": "#fbf9f8",
+                        "secondary-fixed": "#d6e3ff",
+                        "secondary-container": "#63a1ff",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "inverse-primary": "#a7c8ff",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c3c6d1",
+                        "outline": "#737780"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "64px",
+                        "gutter": "24px",
+                        "xs": "8px",
+                        "sm": "16px",
+                        "lg": "40px",
+                        "base": "4px",
+                        "md": "24px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Public Sans"],
+                        "headline-sm": ["Public Sans"],
+                        "display-lg": ["Public Sans"],
+                        "body-lg": ["Public Sans"],
+                        "display-lg-mobile": ["Public Sans"],
+                        "label-sm": ["Public Sans"],
+                        "headline-md": ["Public Sans"],
+                        "body-md": ["Public Sans"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .form-focus-glow:focus {
+            box-shadow: 0 0 0 2px rgba(0, 94, 184, 0.2);
+        }
+        body {
+            background-color: #F5F7F9;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface min-h-screen flex flex-col">
+<!-- TopNavBar (Shell Suppression: Technically a Transactional page, but the JSON TopNavBar provides the Brand Identity) -->
+<header class="w-full top-0 sticky bg-surface border-b border-outline-variant z-50">
+<div class="flex justify-between items-center h-16 px-md max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-3xl">school</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Conservatoire</span>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<nav class="flex gap-md">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Information</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
+</nav>
+</div>
+</div>
+</header>
+<!-- Background Canvas -->
+<main class="flex-grow relative flex items-center justify-center py-xl overflow-hidden">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A grand, neoclassical conservatory concert hall with towering marble columns and an ornate gilded ceiling. Warm sun rays stream through high arched windows, illuminating a polished mahogany floor and rows of velvet seating. The atmosphere is quiet and prestigious, using a sophisticated palette of cream, gold, and deep wood tones to evoke tradition and excellence." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAHc-JvYZAWRgSnek81kjiuySYvRu2945otVbxAKNr0dQ63LM2U0a-DZuG7fq_SsjhztoYd6eCrQG00Lvk6Qd8w4VS_EiSgwTNaj4iXt99-Nwwx0q5npWtwFpl4XyWpYyftHy83erVaAIyrR8Ctmp1jXsQK3cyucv2BKXi1HtcPmS-5GzKIFPoEly3pV9GBi-e76fQi79tDC7u4cMfgXT4pDApp6UtgR2A2636uM4E3ERvDWakc4rgv-Lh_B1GqP8yq5oXgEVf2IIIx')"></div>
+<!-- Tonal Layer for Readability -->
+<div class="absolute inset-0 bg-primary/40 backdrop-blur-[2px]"></div>
+</div>
+<!-- Privacy Banner (Top of Content) -->
+<div class="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-md px-md z-20">
+<div class="bg-surface-container-low/90 backdrop-blur-md rounded-full py-2 px-4 flex items-center justify-center gap-2 border border-outline-variant/30 shadow-sm">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">lock</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Your connection to the National Conservatory is encrypted.</span>
+</div>
+</div>
+<!-- Login Card -->
+<div class="relative z-10 w-full max-w-[440px] px-sm">
+<div class="bg-surface rounded-xl border border-outline-variant shadow-lg p-lg md:p-xl">
+<div class="text-center mb-lg">
+<h1 class="font-headline-md text-headline-md text-primary mb-2">Student &amp; Faculty Login</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Enter your credentials to access the portal.</p>
+</div>
+<form class="space-y-md" onsubmit="event.preventDefault();">
+<!-- Email / ID Input -->
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface" for="identifier">Email Address or Student ID</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">person</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white border border-outline rounded-lg font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-0 focus:outline-none form-focus-glow transition-all" id="identifier" placeholder="e.g. m.davies@conservatoire.edu" type="text"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-xs">
+<div class="flex justify-between items-center">
+<label class="block font-label-md text-label-md text-on-surface" for="password">Password</label>
+<a class="font-label-sm text-label-sm text-secondary hover:underline" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">lock</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white border border-outline rounded-lg font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-0 focus:outline-none form-focus-glow transition-all" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center gap-2 py-1">
+<input class="w-4 h-4 text-secondary border-outline rounded focus:ring-secondary" id="remember" type="checkbox"/>
+<label class="font-label-md text-label-md text-on-surface-variant select-none" for="remember">Keep me signed in for 30 days</label>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-secondary text-on-secondary py-3 px-6 rounded-lg font-label-md text-label-md hover:bg-secondary/90 transition-all flex justify-center items-center gap-2 group" type="submit">
+                        Sign In
+                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</form>
+<div class="mt-xl pt-lg border-t border-outline-variant text-center">
+<p class="font-body-md text-body-md text-on-surface-variant mb-2">New to the Conservatoire?</p>
+<a class="inline-block font-label-md text-label-md text-secondary border border-secondary px-6 py-2 rounded-lg hover:bg-secondary/5 transition-colors" href="#">
+                        Create an Account
+                    </a>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Using JSON structure) -->
+<footer class="w-full py-lg mt-auto bg-surface-dim border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-2 items-center px-md max-w-container-max mx-auto gap-md">
+<div>
+<p class="font-body-md text-body-md text-on-surface">© 2024 National Conservatory of Music. All Rights Reserved.</p>
+<div class="flex gap-sm mt-2">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<span class="text-outline-variant">•</span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Accessibility</a>
+<span class="text-outline-variant">•</span>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="md:text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">Conservatoire</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Excellence in Music Education since 1885</p>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+        // Simple input focus effects and basic interaction states
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('.material-symbols-outlined').style.color = '#005db6';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('.material-symbols-outlined').style.color = '#43474f';
+            });
+        });
+    </script>
+</body></html>

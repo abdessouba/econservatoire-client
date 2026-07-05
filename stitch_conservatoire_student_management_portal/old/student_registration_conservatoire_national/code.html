@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inscription - Conservatoire National de Musique</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#dbd9d9",
+                    "on-tertiary-fixed": "#151c22",
+                    "on-surface-variant": "#43474f",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#a9c7ff",
+                    "on-secondary-fixed": "#001b3d",
+                    "tertiary-fixed": "#dce3eb",
+                    "primary-fixed-dim": "#a7c8ff",
+                    "on-secondary-fixed-variant": "#00468c",
+                    "primary-container": "#003366",
+                    "tertiary-container": "#2d343a",
+                    "tertiary": "#181f25",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-highest": "#e4e2e2",
+                    "on-primary-fixed": "#001b3c",
+                    "primary-fixed": "#d5e3ff",
+                    "surface-bright": "#fbf9f8",
+                    "on-tertiary-container": "#959ca4",
+                    "inverse-on-surface": "#f2f0f0",
+                    "surface-container-high": "#eae8e7",
+                    "on-tertiary-fixed-variant": "#40484e",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary": "#001e40",
+                    "surface-tint": "#3a5f94",
+                    "surface-container-low": "#f5f3f3",
+                    "tertiary-fixed-dim": "#c0c7cf",
+                    "on-primary-container": "#799dd6",
+                    "secondary": "#005db6",
+                    "inverse-surface": "#303030",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary-container": "#00376f",
+                    "background": "#fbf9f8",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-background": "#1b1c1c",
+                    "surface-variant": "#e4e2e2",
+                    "on-error": "#ffffff",
+                    "surface": "#fbf9f8",
+                    "secondary-fixed": "#d6e3ff",
+                    "secondary-container": "#63a1ff",
+                    "on-primary-fixed-variant": "#1f477b",
+                    "inverse-primary": "#a7c8ff",
+                    "on-error-container": "#93000a",
+                    "outline-variant": "#c3c6d1",
+                    "outline": "#737780"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "64px",
+                    "gutter": "24px",
+                    "xs": "8px",
+                    "sm": "16px",
+                    "lg": "40px",
+                    "base": "4px",
+                    "md": "24px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "label-md": ["Public Sans"],
+                    "headline-sm": ["Public Sans"],
+                    "display-lg": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "display-lg-mobile": ["Public Sans"],
+                    "label-sm": ["Public Sans"],
+                    "headline-md": ["Public Sans"],
+                    "body-md": ["Public Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-active { color: var(--tw-secondary); }
+        .form-section { display: none; }
+        .form-section.active { display: block; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-outline-variant">
+<div class="flex justify-between items-center h-16 px-md max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-primary">Conservatoire</span>
+</div>
+<nav class="hidden md:flex gap-md items-center">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="font-label-md text-label-md text-secondary border-b-2 border-secondary pb-1" href="#">Admissions</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Academics</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Performances</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="bg-secondary text-on-secondary px-sm py-xs rounded font-label-md text-label-md hover:opacity-90 transition-opacity">
+                    Secure Login
+                </button>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-md py-lg">
+<!-- Header Info -->
+<div class="mb-xl text-center md:text-left">
+<h1 class="font-display-lg text-display-lg text-primary mb-xs">Inscription Nouvel Élève</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Veuillez remplir le formulaire ci-dessous pour finaliser votre dossier académique.</p>
+</div>
+<!-- Privacy Banner -->
+<div class="bg-surface-container-low p-sm rounded border border-outline-variant flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">lock</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Vos données sont chiffrées et traitées conformément aux normes de protection de la vie privée en vigueur.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Stepper Sidebar -->
+<aside class="lg:col-span-3">
+<div class="sticky top-24 space-y-md">
+<div class="flex items-center gap-sm p-sm rounded-xl bg-surface-container-high border border-outline-variant">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Portail Étudiant</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Session 2024-25</p>
+</div>
+</div>
+<nav class="space-y-xs">
+<button class="w-full text-left p-sm rounded-lg flex items-center gap-sm transition-all bg-secondary-container text-on-secondary-container font-bold" id="step-btn-1" onclick="showSection(1)">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Infos Personnelles</span>
+</button>
+<button class="w-full text-left p-sm rounded-lg flex items-center gap-sm transition-all text-on-surface-variant hover:bg-surface-container-high" id="step-btn-2" onclick="showSection(2)">
+<span class="material-symbols-outlined">contact_mail</span>
+<span class="font-label-md text-label-md">Contact &amp; Documents</span>
+</button>
+<button class="w-full text-left p-sm rounded-lg flex items-center gap-sm transition-all text-on-surface-variant hover:bg-surface-container-high" id="step-btn-3" onclick="showSection(3)">
+<span class="material-symbols-outlined">family_restroom</span>
+<span class="font-label-md text-label-md">Parent / Tuteur</span>
+</button>
+<button class="w-full text-left p-sm rounded-lg flex items-center gap-sm transition-all text-on-surface-variant hover:bg-surface-container-high" id="step-btn-4" onclick="showSection(4)">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-label-md text-label-md">Administration</span>
+</button>
+</nav>
+<div class="p-sm bg-surface-container rounded-lg border border-outline-variant">
+<div class="w-full h-40 bg-surface-dim rounded border border-dashed border-outline flex flex-col items-center justify-center gap-xs cursor-pointer hover:bg-white transition-colors relative overflow-hidden group">
+<img class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity" data-alt="A professional studio portrait setup for a student identification photo, featuring soft three-point lighting against a neutral grey backdrop. The aesthetic is clean, academic, and modern, echoing the formality of a conservatory application. High-resolution quality with a focus on clear facial features for administrative records." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApNL8AWziCPLEEDznSVdnbMKexA3t_09v3C8QM0euvYaS232gkrrIGRkGzgK2-1Jcd3VnJQyY_8yzUfHEAlp1jFkRpDCVsfwdpeXzH9jKvdmJBvt5nlydM9uusP2AlTz5DhR6pUZVXltTncWYrETtSqHBVracTV0ayvQvlnqSjVj8WKs-AT7lVQDzoeLeoYTakOFr2s7MFHVbH43ulqNYWuFmiQQzV-mNgvDLGfsM81542Pint5kX1zCoAHtxBpZAR4MXp1L8H483c"/>
+<span class="material-symbols-outlined text-primary text-3xl z-10">photo_camera</span>
+<span class="font-label-sm text-label-sm text-primary z-10">Photo d'identité</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Form Canvas -->
+<form class="lg:col-span-9 space-y-md" id="registrationForm">
+<!-- Section 1: Personal Info -->
+<section class="form-section active space-y-md" id="section-1">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-md border-b border-outline-variant pb-xs">Informations Personnelles</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Nom</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="Entrez votre nom" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Prénom</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="Entrez votre prénom" type="text"/>
+</div>
+<div class="space-y-xs text-right">
+<label class="font-label-md text-label-md text-on-surface">الاسم الكامل بالعربية</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-right" dir="rtl" placeholder="الاسم والنسب" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Sexe</label>
+<select class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none">
+<option>Masculin</option>
+<option>Féminin</option>
+</select>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Date de naissance</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" type="date"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Lieu de naissance</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="Ville de naissance" type="text"/>
+</div>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="bg-secondary text-on-secondary px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm hover:opacity-90" onclick="showSection(2)" type="button">
+                            Continuer <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Section 2: Contact & Documents -->
+<section class="form-section space-y-md" id="section-2">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-md border-b border-outline-variant pb-xs">Contact &amp; Pièces Justificatives</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="md:col-span-2 space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Adresse Résidentielle</label>
+<textarea class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="Numéro, rue, quartier..." rows="2"></textarea>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">CIN / Identité</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="A123456" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Téléphone Mobile</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="+212 6..." type="tel"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Téléphone Fixe</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="+212 5..." type="tel"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">E-mail</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="nom@exemple.com" type="email"/>
+</div>
+</div>
+</div>
+<div class="flex justify-between">
+<button class="border border-primary text-primary px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm hover:bg-surface-container-low" onclick="showSection(1)" type="button">
+<span class="material-symbols-outlined">arrow_back</span> Retour
+                        </button>
+<button class="bg-secondary text-on-secondary px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm hover:opacity-90" onclick="showSection(3)" type="button">
+                            Continuer <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Section 3: Parent/Guardian -->
+<section class="form-section space-y-md" id="section-3">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-md border-b border-outline-variant pb-xs">Parent / Tuteur Légal</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Nom du Père / Tuteur</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="Prénom et Nom" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Profession</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="Métier exercé" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Lien de parenté</label>
+<select class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none">
+<option>Père</option>
+<option>Mère</option>
+<option>Tuteur légal</option>
+<option>Autre</option>
+</select>
+</div>
+</div>
+</div>
+<div class="flex justify-between">
+<button class="border border-primary text-primary px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm hover:bg-surface-container-low" onclick="showSection(2)" type="button">
+<span class="material-symbols-outlined">arrow_back</span> Retour
+                        </button>
+<button class="bg-secondary text-on-secondary px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm hover:opacity-90" onclick="showSection(4)" type="button">
+                            Continuer <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Section 4: Administrative -->
+<section class="form-section space-y-md" id="section-4">
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-md border-b border-outline-variant pb-xs">Détails Administratifs</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-lg">
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Identifiant unique (Massar/Code)</label>
+<input class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="ID National" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Type de Profil</label>
+<select class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none">
+<option>Étudiant Standard</option>
+<option>Professionnel</option>
+<option>Auditeur Libre</option>
+</select>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface">Régime de Tarification</label>
+<select class="w-full bg-white border border-outline-variant rounded p-sm focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none">
+<option>Plein Tarif</option>
+<option>Tarif Réduit (Social)</option>
+<option>Exonéré</option>
+</select>
+</div>
+</div>
+<!-- Checkboxes / Toggles -->
+<div class="space-y-sm pt-md border-t border-outline-variant">
+<label class="flex items-start gap-sm cursor-pointer group">
+<input class="mt-1 w-5 h-5 text-secondary border-outline-variant rounded focus:ring-secondary" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">Issu d'une famille de militaire / corps d'état</span>
+</label>
+<label class="flex items-start gap-sm cursor-pointer group">
+<input class="mt-1 w-5 h-5 text-secondary border-outline-variant rounded focus:ring-secondary" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">Demande de reclassement de niveau</span>
+</label>
+<label class="flex items-start gap-sm cursor-pointer group">
+<input class="mt-1 w-5 h-5 text-secondary border-outline-variant rounded focus:ring-secondary" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">Frais d'imprimés et dossier acquittés</span>
+</label>
+<label class="flex items-start gap-sm cursor-pointer group p-sm bg-secondary-fixed/10 rounded-lg">
+<input class="mt-1 w-5 h-5 text-secondary border-outline-variant rounded focus:ring-secondary" required="" type="checkbox"/>
+<span class="font-label-md text-label-md text-on-secondary-fixed-variant">J'ai lu et j'accepte les conditions générales d'inscription et le règlement intérieur du Conservatoire National.</span>
+</label>
+</div>
+</div>
+<div class="flex justify-between">
+<button class="border border-primary text-primary px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm hover:bg-surface-container-low" onclick="showSection(3)" type="button">
+<span class="material-symbols-outlined">arrow_back</span> Retour
+                        </button>
+<button class="bg-primary text-on-primary px-xl py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm hover:opacity-90 shadow-lg" type="submit">
+<span class="material-symbols-outlined">send</span> Finaliser l'Inscription
+                        </button>
+</div>
+</section>
+</form>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-lg mt-xl bg-surface-dim border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-2 items-center px-md max-w-container-max mx-auto gap-md">
+<div>
+<span class="font-headline-sm text-headline-sm font-bold text-primary">Conservatoire</span>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">© 2024 National Conservatory of Music. All Rights Reserved.</p>
+</div>
+<div class="flex flex-wrap gap-md md:justify-end">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Accessibility</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+<script>
+        function showSection(num) {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+            // Show selected section
+            document.getElementById('section-' + num).classList.add('active');
+            
+            // Update stepper buttons
+            document.querySelectorAll('aside nav button').forEach(btn => {
+                btn.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'font-bold');
+                btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container-high');
+            });
+            
+            const activeBtn = document.getElementById('step-btn-' + num);
+            activeBtn.classList.add('bg-secondary-container', 'text-on-secondary-container', 'font-bold');
+            activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-high');
+
+            // Smooth scroll to top of form on mobile
+            if(window.innerWidth < 1024) {
+                document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Formulaire soumis avec succès ! Redirection vers le paiement...');
+        });
+    </script>
+</body></html>

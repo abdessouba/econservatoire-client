@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verify Your Email | Conservatoire</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#dbd9d9",
+                    "on-tertiary-fixed": "#151c22",
+                    "on-surface-variant": "#43474f",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#a9c7ff",
+                    "on-secondary-fixed": "#001b3d",
+                    "tertiary-fixed": "#dce3eb",
+                    "primary-fixed-dim": "#a7c8ff",
+                    "on-secondary-fixed-variant": "#00468c",
+                    "primary-container": "#003366",
+                    "tertiary-container": "#2d343a",
+                    "tertiary": "#181f25",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-highest": "#e4e2e2",
+                    "on-primary-fixed": "#001b3c",
+                    "primary-fixed": "#d5e3ff",
+                    "surface-bright": "#fbf9f8",
+                    "on-tertiary-container": "#959ca4",
+                    "inverse-on-surface": "#f2f0f0",
+                    "surface-container-high": "#eae8e7",
+                    "on-tertiary-fixed-variant": "#40484e",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary": "#001e40",
+                    "surface-tint": "#3a5f94",
+                    "surface-container-low": "#f5f3f3",
+                    "tertiary-fixed-dim": "#c0c7cf",
+                    "on-primary-container": "#799dd6",
+                    "secondary": "#005db6",
+                    "inverse-surface": "#303030",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary-container": "#00376f",
+                    "background": "#fbf9f8",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-background": "#1b1c1c",
+                    "surface-variant": "#e4e2e2",
+                    "on-error": "#ffffff",
+                    "surface": "#fbf9f8",
+                    "secondary-fixed": "#d6e3ff",
+                    "secondary-container": "#63a1ff",
+                    "on-primary-fixed-variant": "#1f477b",
+                    "inverse-primary": "#a7c8ff",
+                    "on-error-container": "#93000a",
+                    "outline-variant": "#c3c6d1",
+                    "outline": "#737780"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "64px",
+                    "gutter": "24px",
+                    "xs": "8px",
+                    "sm": "16px",
+                    "lg": "40px",
+                    "base": "4px",
+                    "md": "24px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "label-md": ["Public Sans"],
+                    "headline-sm": ["Public Sans"],
+                    "display-lg": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "label-sm": ["Public Sans"],
+                    "headline-md": ["Public Sans"],
+                    "body-md": ["Public Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #F5F7F9; /* Level 0 Base from Style Guidance */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-background {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- TopNavBar Simplified for Transactional Context (Suppressing full nav links per mandate) -->
+<header class="w-full top-0 sticky bg-surface border-b border-outline-variant z-50">
+<div class="flex justify-between items-center h-16 px-md max-w-container-max mx-auto">
+<div class="flex items-center gap-xs">
+<span class="font-headline-md text-headline-md font-bold text-primary">Conservatoire</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">lock</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Secure Session</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center py-xl px-sm relative overflow-hidden">
+<!-- Subtle Ambient Background Pattern -->
+<div class="absolute inset-0 pointer-events-none opacity-5">
+<div class="absolute top-0 left-0 w-full h-full" style="background-image: radial-gradient(#001e40 1px, transparent 1px); background-size: 32px 32px;"></div>
+</div>
+<!-- Verification Card (Level 1 Container) -->
+<div class="w-full max-w-[520px] bg-white border border-[#D1D5DB] rounded-lg p-lg relative z-10">
+<!-- Icon & Branding Header -->
+<div class="flex flex-col items-center text-center mb-md">
+<div class="w-20 h-20 bg-secondary-container bg-opacity-20 rounded-full flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-[48px] text-secondary">mark_as_unread</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary mb-xs">Check your inbox</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[360px]">
+                    We've sent a verification link to your registered email address to ensure the security of your student records.
+                </p>
+</div>
+<!-- Email Display -->
+<div class="bg-surface-container-low rounded p-sm flex items-center justify-center gap-xs mb-md border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">alternate_email</span>
+<span class="font-label-md text-label-md text-primary">s.j****n@academic.edu</span>
+</div>
+<!-- Instructions List -->
+<div class="space-y-sm mb-lg">
+<div class="flex gap-sm">
+<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center font-label-sm text-label-sm">1</div>
+<p class="font-body-md text-body-md text-on-surface">Click the link in the email to activate your account.</p>
+</div>
+<div class="flex gap-sm">
+<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center font-label-sm text-label-sm">2</div>
+<p class="font-body-md text-body-md text-on-surface">Can't find it? Please check your <strong>Spam</strong> or <strong>Updates</strong> folder.</p>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-sm">
+<button class="w-full bg-secondary text-on-secondary font-label-md text-label-md py-sm rounded-lg hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-xs" id="resendBtn">
+<span class="material-symbols-outlined">send</span>
+                    Resend Email
+                </button>
+<div class="hidden font-label-sm text-label-sm text-center text-secondary py-xs bg-secondary-fixed bg-opacity-30 rounded border border-secondary-fixed-dim transition-all" id="toast">
+                    A new verification link has been sent.
+                </div>
+<div class="pt-sm border-t border-outline-variant text-center mt-sm">
+<a class="inline-flex items-center gap-xs text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                        Back to Secure Login
+                    </a>
+</div>
+</div>
+<!-- Security Footer within Card -->
+<div class="mt-lg flex items-center justify-center gap-xs px-sm py-xs bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-[16px] text-on-tertiary-fixed-variant">verified_user</span>
+<span class="font-label-sm text-label-sm text-on-tertiary-fixed-variant">Encrypted by National Security Standards</span>
+</div>
+</div>
+</main>
+<!-- Global Footer -->
+<footer class="w-full py-lg mt-xl bg-surface-dim border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-2 items-center px-md max-w-container-max mx-auto gap-md">
+<div>
+<p class="font-headline-sm text-headline-sm font-bold text-primary">Conservatoire</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">© 2024 National Conservatory of Music. All Rights Reserved.</p>
+</div>
+<div class="flex flex-wrap md:justify-end gap-md">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Accessibility</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for Resend button
+        const resendBtn = document.getElementById('resendBtn');
+        const toast = document.getElementById('toast');
+
+        resendBtn.addEventListener('click', () => {
+            const originalContent = resendBtn.innerHTML;
+            resendBtn.disabled = true;
+            resendBtn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Sending...`;
+            resendBtn.classList.add('opacity-80');
+
+            setTimeout(() => {
+                resendBtn.innerHTML = originalContent;
+                resendBtn.disabled = false;
+                resendBtn.classList.remove('opacity-80');
+                
+                toast.classList.remove('hidden');
+                toast.classList.add('animate-bounce');
+                
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 5000);
+            }, 1500);
+        });
+    </script>
+</body></html>
