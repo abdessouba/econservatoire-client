@@ -8,15 +8,32 @@ import Alert from "../../components/ui/Alert";
 import MaterialIcon from "../../components/ui/MaterialIcon";
 import { resetPassword } from "../../api/eleveService";
 import { parseApiError } from "../../api/apiError";
+import { useToast } from "../../context/ToastContext";
+
+function validateResetForm(form) {
+  const errors = {};
+  if (!form.newPassword) {
+    errors.newPassword = 'Le mot de passe est obligatoire.';
+  } else if (form.newPassword.length < 8) {
+    errors.newPassword = 'Le mot de passe doit contenir au moins 8 caractères.';
+  }
+  if (!form.confirmPassword) {
+    errors.confirmPassword = 'Veuillez confirmer le mot de passe.';
+  } else if (form.newPassword !== form.confirmPassword) {
+    errors.confirmPassword = 'Les mots de passe ne correspondent pas.';
+  }
+  return errors;
+}
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
 
   const [form, setForm] = useState({ newPassword: "", confirmPassword: "" });
   const [errors, setErrors] = useState({});
-  const [toast, setToast] = useState(null); // { type: 'success' | 'error', message: string }
+  const [alert, setAlert] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
@@ -32,25 +49,28 @@ export default function ResetPasswordPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setToast(null);
-    setErrors({});
+    setAlert(null);
+
+    const validationErrors = validateResetForm(form);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     setSubmitting(true);
     try {
-      const newPassword = form.newPassword
-      const response = await resetPassword({ token, newPassword});
-      setToast({
-        type: "success",
-        message:
-          response.message || "Votre mot de passe a été mis à jour avec succès.",
-      });
-      // Redirect to sign-in after a short delay so the user can read the message
-      setTimeout(() => navigate("/connexion"), 2500);
+      const response = await resetPassword({ token, newPassword: form.newPassword });
+      showToast(
+        "success",
+        response.message || "Votre mot de passe a été mis à jour avec succès.",
+      );
+      navigate("/connexion", { replace: true });
     } catch (err) {
       const parsed = parseApiError(err);
       if (parsed.type === "validation") {
         setErrors(parsed.fieldErrors);
       }
-      setToast({ type: "error", message: parsed.message });
+      setAlert({ type: "error", message: parsed.message });
     } finally {
       setSubmitting(false);
     }
@@ -89,7 +109,6 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="font-body-md text-on-surface min-h-screen flex flex-col">
-      
       <TopNavBar secureSessionLabel="Portail Sécurisé" />
 
       <main className="flex-grow flex items-center justify-center p-sm relative overflow-hidden">
@@ -108,7 +127,7 @@ export default function ResetPasswordPage() {
           {/* Icon + heading */}
           <div className="text-center mb-md">
             <div className="inline-flex items-center justify-center w-12 h-12 bg-secondary-fixed text-on-secondary-container rounded-full mb-sm">
-              <span className="material-symbols-outlined text-[32px]">lock_reset</span>
+              <MaterialIcon name="lock_reset" className="text-[32px]" />
             </div>
             <h1 className="font-headline-md text-headline-md text-primary mb-xs">
               Réinitialiser votre mot de passe
@@ -121,25 +140,20 @@ export default function ResetPasswordPage() {
           <form className="space-y-md" onSubmit={handleSubmit} noValidate>
             {/* Info banner */}
             <div className="bg-surface-container-low p-sm rounded flex items-start gap-xs border-l-4 border-secondary">
-              <span className="material-symbols-outlined text-secondary text-[20px]">
-                info
-              </span>
+              <MaterialIcon name="info" className="text-secondary text-[20px]" />
               <p className="font-label-sm text-label-sm text-on-surface-variant">
                 Vos données sont chiffrées de bout en bout. Choisissez un mot de
                 passe robuste d'au moins 8 caractères.
               </p>
             </div>
 
-            <div>
-              {/* Toast notification */}
-              {toast && (
-                  <Alert
-                    type={toast.type}
-                    message={toast.message}
-                    onClose={() => setToast(null)}
-                  />
-              )}
-            </div>
+            {alert && (
+              <Alert
+                type={alert.type}
+                message={alert.message}
+                onClose={() => setAlert(null)}
+              />
+            )}
 
             <Input
               label="Nouveau mot de passe"
@@ -183,7 +197,7 @@ export default function ResetPasswordPage() {
                 to="/connexion"
                 className="inline-flex items-center gap-xs font-label-md text-label-md text-secondary hover:underline transition-all"
               >
-                <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+                <MaterialIcon name="arrow_back" className="text-[18px]" />
                 Retour à la connexion
               </Link>
             </div>

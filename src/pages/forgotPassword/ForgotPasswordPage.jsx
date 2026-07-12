@@ -5,33 +5,43 @@ import Footer from "../../components/layout/Footer";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import Alert from "../../components/ui/Alert";
+import MaterialIcon from "../../components/ui/MaterialIcon";
 import { forgotPassword } from "../../api/eleveService";
 import { parseApiError } from "../../api/apiError";
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [toast, setToast] = useState(null); // { type: 'success' | 'error', message: string }
+  const [identifier, setIdentifier] = useState("");
+  const [identifierError, setIdentifierError] = useState("");
+  const [alert, setAlert] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setToast(null);
-    setEmailError("");
+    setAlert(null);
+    setIdentifierError("");
+
+    if (!identifier.trim()) {
+      setIdentifierError("L'identifiant est obligatoire.");
+      return;
+    }
+
     setSubmitting(true);
     try {
-      const response = await forgotPassword(email);
-      setToast({
+      const response = await forgotPassword(identifier);
+      setAlert({
         type: "success",
-        message: response.message || "Instructions envoyées à votre adresse e-mail.",
+        message: response.message || "Instructions envoyées à votre identifiant.",
       });
-      setEmail("");
+      setIdentifier("");
     } catch (err) {
       const parsed = parseApiError(err);
-      if (parsed.type === "validation" && parsed.fieldErrors?.email) {
-        setEmailError(parsed.fieldErrors.email);
+      if (parsed.type === "validation") {
+        const fieldError = parsed.fieldErrors?.identifier || parsed.fieldErrors?.email;
+        if (fieldError) {
+          setIdentifierError(fieldError);
+        }
       }
-      setToast({ type: "error", message: parsed.message });
+      setAlert({ type: "error", message: parsed.message });
     } finally {
       setSubmitting(false);
     }
@@ -39,7 +49,6 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="font-body-md text-on-surface min-h-screen flex flex-col">
-      
       <TopNavBar secureSessionLabel="Portail Sécurisé" />
 
       <main className="flex-grow relative flex items-center justify-center py-xl overflow-hidden">
@@ -61,13 +70,13 @@ export default function ForgotPasswordPage() {
             {/* Icon + heading */}
             <div className="flex flex-col items-center gap-xs text-center">
               <div className="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-primary mb-2">
-                <span className="material-symbols-outlined text-4xl">lock_reset</span>
+                <MaterialIcon name="lock_reset" className="text-4xl" />
               </div>
               <h1 className="font-headline-md text-headline-md text-primary">
                 Mot de passe oublié ?
               </h1>
               <p className="font-body-md text-body-md text-on-surface-variant max-w-[340px]">
-                Entrez votre adresse e-mail pour recevoir les instructions de
+                Entrez votre identifiant de compte pour recevoir les instructions de
                 réinitialisation de votre mot de passe.
               </p>
             </div>
@@ -76,35 +85,34 @@ export default function ForgotPasswordPage() {
             <form className="flex flex-col gap-md" onSubmit={handleSubmit} noValidate>
               {/* Secure session banner */}
               <div className="flex items-center gap-xs p-xs bg-surface-container-low border border-outline-variant rounded text-on-surface-variant">
-                <span className="material-symbols-outlined text-sm">lock</span>
+                <MaterialIcon name="lock" className="text-sm" />
                 <span className="font-label-sm text-label-sm">
                   Session sécurisée et cryptée
                 </span>
               </div>
 
-              {/* Toast notification */}
-                    {toast && (
-                        <Alert
-                          type={toast.type}
-                          message={toast.message}
-                          onClose={() => setToast(null)}
-                        />
-                  )}
+              {alert && (
+                <Alert
+                  type={alert.type}
+                  message={alert.message}
+                  onClose={() => setAlert(null)}
+                />
+              )}
 
               <Input
-                label="Adresse e-mail"
-                id="email"
-                name="email"
-                type="email"
-                icon="alternate_email"
+                label="Identifiant"
+                id="identifier"
+                name="identifier"
+                type="text"
+                icon="person"
                 required
-                placeholder="Entrez votre adresse e-mail"
-                value={email}
+                placeholder="Entrez votre identifiant"
+                value={identifier}
                 onChange={(e) => {
-                  setEmail(e.target.value);
-                  setEmailError("");
+                  setIdentifier(e.target.value);
+                  setIdentifierError("");
                 }}
-                error={emailError}
+                error={identifierError}
               />
 
               <Button
@@ -123,7 +131,7 @@ export default function ForgotPasswordPage() {
                   to="/connexion"
                   className="flex items-center gap-xs font-label-md text-label-md text-secondary hover:text-primary transition-colors"
                 >
-                  <span className="material-symbols-outlined text-sm">arrow_back</span>
+                  <MaterialIcon name="arrow_back" className="text-sm" />
                   Retour à la connexion
                 </Link>
               </div>
@@ -132,7 +140,7 @@ export default function ForgotPasswordPage() {
             {/* Footer note */}
             <div className="border-t border-outline-variant pt-md text-center">
               <p className="font-label-sm text-label-sm text-outline">
-                Votre adresse e-mail est celle utilisée lors de votre inscription.
+                Votre identifiant est votre numéro d'étudiant ou votre matricule personnel.
               </p>
             </div>
           </div>

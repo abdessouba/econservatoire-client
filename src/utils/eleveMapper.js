@@ -38,7 +38,7 @@ export const INITIAL_REGISTRATION_FORM = {
   nom: '',
   prenom: '',
   nomAr: '',
-  nomPrenomAr: '',
+  prenomAr: '',
   sexe: '',
   dateNaissance: '',
   lieuNaissance: '',

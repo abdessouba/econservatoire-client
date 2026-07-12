@@ -53,6 +53,36 @@ body {
     }
 }
 
+@keyframes toast-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes page-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .animate-toast-in {
     animation: toast-in 0.2s ease-out;
+}
+
+.animate-toast-out {
+    animation: toast-out 0.26s ease-in forwards;
+}
+
+.animate-page-in {
+    animation: page-fade-in 0.25s ease-out;
 }

@@ -3,57 +3,56 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import TopNavBar from "../../components/layout/TopNavBar";
 import Footer from "../../components/layout/Footer";
 import Button from "../../components/ui/Button";
+import Alert from "../../components/ui/Alert";
 import MaterialIcon from "../../components/ui/MaterialIcon";
 import { verifyEmail } from "../../api/eleveService";
-import Alert from "../../components/ui/Alert";
+import { parseApiError } from "../../api/apiError";
+import { useToast } from "../../context/ToastContext";
 
 export default function VerifyEmailPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const email = location.state?.email;
   const [alert, setAlert] = useState(null);
-
   const [resending, setResending] = useState(false);
-  const [showToast, setShowToast] = useState(false);
 
-  // If a user lands here directly (e.g. page reload) without navigation
-  // state, send them back to the registration form instead of showing a
-  // blank/incorrect email.
   useEffect(() => {
     const token = new URLSearchParams(location.search).get("token");
-    const handleVerifyEmail = async (token) => {
-      try {
-        const response = await verifyEmail(token)
-        navigate('/connexion', { state: { verified: true, message: response?.message} })
-      } catch (err) {
-        let error = err.response.data.error || "Something went wrong!"
-        setAlert({
-        type: 'error',
-        message: error,
-      });
-      }
+
+    // Email verification via token link (user clicked from inbox)
+    if (token) {
+      verifyEmail(token)
+        .then((response) => {
+          showToast("success", response?.message || "E-mail vérifié avec succès !");
+          navigate("/connexion", { replace: true });
+        })
+        .catch((err) => {
+          const parsed = parseApiError(err);
+          setAlert({ type: "error", message: parsed.message });
+        });
+      return; // skip the email-guard below
     }
 
-    if(token){
-      handleVerifyEmail(token)
-    }
-  
+    // No token and no email state → user landed here directly, send back
     if (!email) {
       navigate("/inscription", { replace: true });
     }
-  }, [email, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  if (!email) return null;
+  // While the token verification redirect is in flight, show nothing
+  const hasToken = Boolean(new URLSearchParams(location.search).get("token"));
+  if (hasToken && !alert) return null;
+
+  if (!email && !alert) return null;
 
   const handleResend = () => {
     setResending(true);
-    // No dedicated "resend" endpoint was provided by the backend yet; this
-    // simulates the action so the UX/flow is complete and ready to be wired
-    // up once that endpoint exists.
+    // No dedicated "resend" endpoint yet; simulates the action so UX is complete.
     setTimeout(() => {
       setResending(false);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 5000);
+      setAlert({ type: "success", message: "Un nouveau lien de vérification a été envoyé." });
     }, 1200);
   };
 
@@ -88,15 +87,17 @@ export default function VerifyEmailPage() {
             </p>
           </div>
 
-          <div className="bg-surface-container-low rounded p-sm flex items-center justify-center gap-xs mb-md border border-outline-variant">
-            <MaterialIcon
-              name="alternate_email"
-              className="text-on-surface-variant text-[18px]"
-            />
-            <span className="font-label-md text-label-md text-primary">
-              {email}
-            </span>
-          </div>
+          {email && (
+            <div className="bg-surface-container-low rounded p-sm flex items-center justify-center gap-xs mb-md border border-outline-variant">
+              <MaterialIcon
+                name="alternate_email"
+                className="text-on-surface-variant text-[18px]"
+              />
+              <span className="font-label-md text-label-md text-primary">
+                {email}
+              </span>
+            </div>
+          )}
 
           <div className="space-y-sm mb-lg">
             <div className="flex gap-sm">
@@ -117,6 +118,7 @@ export default function VerifyEmailPage() {
               </p>
             </div>
           </div>
+
           {alert && (
             <Alert
               type={alert.type}
@@ -125,6 +127,7 @@ export default function VerifyEmailPage() {
               className="mb-md"
             />
           )}
+
           <div className="flex flex-col gap-sm">
             <Button
               onClick={handleResend}
@@ -135,11 +138,6 @@ export default function VerifyEmailPage() {
             >
               Renvoyer l'e-mail
             </Button>
-            {showToast && (
-              <div className="font-label-sm text-label-sm text-center text-secondary py-xs bg-secondary-fixed bg-opacity-30 rounded border border-secondary-fixed-dim transition-all animate-toast-in">
-                Un nouveau lien de vérification a été envoyé.
-              </div>
-            )}
             <div className="pt-sm border-t border-outline-variant text-center mt-sm">
               <Link
                 to="/connexion"

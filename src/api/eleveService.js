@@ -24,14 +24,14 @@ export function signInEleve(credentials) {
 }
 
 /**
- * Sends a password-reset email to the given address.
+ * Sends a password-reset request for the given identifier.
  * Backend: POST /api/eleve/auth/forget-password
- * Body: ForgetPasswordRequest { email }
+ * Body: ForgetPasswordRequest { identifier }
  * Success response body: ApiResponse<Void>
  */
-export function forgotPassword(email) {
+export function forgotPassword(identifier) {
   return axiosClient
-    .post("/eleve/auth/forget-password", { email })
+    .post("/eleve/auth/forget-password", { identifier })
     .then((res) => res.data);
 }
 
@@ -51,5 +51,17 @@ export function resetPassword(data) {
 export function verifyEmail(token){
   return axiosClient
     .get("/eleve/auth/verify-email?token="+token)
+    .then((res) => res.data);
+}
+
+export function getAuthData(){
+  return axiosClient
+    .get("/eleve/auth/me")
+    .then((res) => res.data);
+}
+
+export function logoutEleve() {
+  return axiosClient
+    .get("/eleve/auth/logout")
     .then((res) => res.data);
 }

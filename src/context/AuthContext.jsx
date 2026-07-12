@@ -1,39 +1,51 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import axiosClient from '../api/axiosClient';
+import { getAuthData } from '../api/eleveService';
 
 const AuthContext = createContext(null);
 
-const STORAGE_KEY = 'conservatoire.eleve';
-
 export function AuthProvider({ children }) {
-  const [eleve, setEleve] = useState(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const syncAuthUser = async () => {
+    const response = await getAuthData();
+    const nextUser = response.data?.data ?? response.data ?? null;
+    setUser(nextUser);
+    setAuthenticated(true);
+    return nextUser;
+  };
 
   useEffect(() => {
-    try {
-      if (eleve) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(eleve));
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
+    const loadUser = async () => {
+      try {
+        await syncAuthUser();
+      } catch {
+        setAuthenticated(false);
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
-    } catch {
-      // ignore storage errors (e.g. private browsing)
-    }
-  }, [eleve]);
+    };
+
+    loadUser();
+  }, []);
 
   const value = useMemo(
     () => ({
-      eleve,
-      isAuthenticated: Boolean(eleve),
-      login: (eleveSignInReponse) => setEleve(eleveSignInReponse),
-      logout: () => setEleve(null),
+      user,
+      authenticated,
+      loading,
+      login: async () => {
+        return syncAuthUser();
+      },
+      logout: () => {
+        setUser(null);
+        setAuthenticated(false);
+      },
     }),
-    [eleve],
+    [user, authenticated, loading],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

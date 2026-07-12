@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import TopNavBar from "../../components/layout/TopNavBar";
 import Footer from "../../components/layout/Footer";
 import Input from "../../components/ui/Input";
@@ -9,26 +9,18 @@ import { validateSignIn } from "../../utils/validators";
 import { signInEleve } from "../../api/eleveService";
 import { parseApiError } from "../../api/apiError";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 
 const INITIAL_FORM = { identifier: "", password: "" };
 
 export default function SignInPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { showToast } = useToast();
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
   const [alert, setAlert] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const location = useLocation();
-
-  useEffect(()=>{
-    if(location.state?.verified){
-      setAlert({
-        type: "success",
-        message: location.state?.message,
-      });
-    }
-  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,14 +45,10 @@ export default function SignInPage() {
 
     setSubmitting(true);
     try {
-      console.log(form);
       const response = await signInEleve(form);
-      login(response?.data);
-      setAlert({
-        type: "success",
-        message: response?.message || "Connexion réussie !",
-      });
-      setTimeout(() => navigate("/tableau-de-bord"), 500);
+      await login();
+      showToast("success", response?.message || "Connexion réussie !");
+      navigate("/tableau-de-bord", { replace: true });
     } catch (err) {
       const parsed = parseApiError(err);
       if (parsed.type === "validation") {

@@ -47,8 +47,8 @@ export default function PersonalInfoSection({
           />
           <Input
             label="الاسم بالعربية"
-            id="nom_ar"
-            name="nom_ar"
+            id="prenomAr"
+            name="prenomAr"
             dir="rtl"
             placeholder="الاسم"
             value={form.prenomAr}

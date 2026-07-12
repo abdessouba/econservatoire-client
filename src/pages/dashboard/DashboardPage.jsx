@@ -2,6 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../../components/layout/Footer';
 import MaterialIcon from '../../components/ui/MaterialIcon';
 import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../context/ToastContext';
+import { logoutEleve } from '../../api/eleveService';
 
 const SIDEBAR_LINKS = [
   { icon: 'dashboard', label: 'Vue d\'ensemble', active: true },
@@ -11,53 +13,115 @@ const SIDEBAR_LINKS = [
   { icon: 'settings', label: 'Paramètres' },
 ];
 
-const IDENTITY = [
-  { label: 'Nom légal complet', value: 'Jean-Baptiste Lully' },
-  { label: 'Date de naissance', value: '28 Novembre 1998' },
-  { label: 'Nationalité', value: 'Française' },
-  { label: 'Identifiant national', value: 'FR-8820-XL-92' },
-];
+const formatDate = (value) => {
+  if (!value) return 'Non renseigné';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  }).format(date);
+};
 
-const CONTACT = [
-  { label: 'E-mail institutionnel', value: 'j.lully@conservatoire.edu', highlight: true },
-  { label: 'Téléphone', value: '+33 1 42 67 00 00' },
-  { label: 'Adresse résidentielle', value: '14 Rue de la Musique\n75008 Paris, France' },
-  { label: "Contact d'urgence", value: 'Mme. Madeleine Lully (Épouse)' },
-];
+const formatDateTime = (value) => {
+  if (!value) return 'Non renseigné';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
+};
 
-const ACADEMIC_PATH = [
-  {
-    period: 'ACTUEL',
-    title: 'Master de Composition',
-    detail: 'Spécialité : Structures du Grand Motet',
-    current: true,
-  },
-  {
-    period: '2019 - 2022',
-    title: "Licence d'Orchestration",
-    detail: 'Diplômé avec Mention Très Bien',
-  },
-  {
-    period: '2016 - 2019',
-    title: 'Préparatoire du Conservatoire',
-    detail: 'Institut National de Lyon',
-  },
-];
+const formatValue = (value) => value || 'Non renseigné';
 
-const REGISTRATION_STEPS = [
-  { label: 'Candidature', state: 'done' },
-  { label: 'Soumission des travaux', state: 'active', number: 2 },
-  { label: 'Évaluation par les pairs', state: 'pending', number: 3 },
-  { label: 'Jury final', state: 'pending', number: 4 },
-];
+function InfoCard({ icon, title, items }) {
+  return (
+    <div className="md:col-span-4 tonal-card rounded-xl p-md">
+      <div className="flex items-center gap-sm mb-md">
+        <MaterialIcon name={icon} className="text-secondary" />
+        <h3 className="font-headline-sm text-headline-sm text-on-surface">{title}</h3>
+      </div>
+      <div className="space-y-md">
+        {items.map((item) => (
+          <div key={item.label}>
+            <p className="font-label-sm text-on-surface-variant uppercase tracking-wider">
+              {item.label}
+            </p>
+            <p
+              className={
+                item.highlight
+                  ? 'font-body-md text-secondary font-semibold break-words'
+                  : 'font-body-md text-on-surface font-semibold break-words whitespace-pre-line'
+              }
+            >
+              {formatValue(item.value)}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function DashboardPage() {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const { showToast } = useToast();
   const navigate = useNavigate();
+  const account = user?.data ?? user ?? null;
 
-  const handleLogout = () => {
-    logout();
-    navigate('/connexion');
+  const fullName = [account?.prenom, account?.nom].filter(Boolean).join(' ').trim();
+  const arabicFullName = [account?.prenom_ar, account?.nom_ar].filter(Boolean).join(' ').trim();
+  const displayName = fullName || 'Profil étudiant';
+  const isVerified = Boolean(account?.valide);
+  const photoUrl = typeof account?.photo === 'string' ? account.photo : null;
+  const initials = [account?.prenom?.[0], account?.nom?.[0]].filter(Boolean).join('') || '??';
+
+  const identityItems = [
+    { label: 'Nom complet', value: displayName },
+    { label: 'Nom complet en arabe', value: arabicFullName },
+    { label: 'Sexe', value: formatValue(account?.sexe) },
+    { label: 'Date de naissance', value: formatDate(account?.date_naissance) },
+    { label: 'Lieu de naissance', value: formatValue(account?.lieu_naissance) },
+    { label: 'Pays', value: formatValue(account?.pay?.nom_pay) },
+  ];
+
+  const contactItems = [
+    { label: 'E-mail', value: account?.email, highlight: true },
+    { label: 'Téléphone mobile', value: account?.mobile },
+    { label: 'Téléphone fixe', value: account?.fixe },
+    { label: 'Adresse', value: account?.adresse },
+    { label: 'CIN', value: account?.cin },
+  ];
+
+  const familyItems = [
+    { label: 'Nom du père', value: account?.nom_pere },
+    { label: 'Profession du père', value: account?.profession_pere },
+    { label: 'Culture du parent', value: account?.parent_culture },
+    { label: 'DRPP parent', value: account?.drpp_parent },
+    { label: 'Lien de parenté', value: account?.lien_parente },
+  ];
+
+  const accountItems = [
+    { label: 'Identifiant interne', value: account?.id },
+    { label: 'Compte vérifié', value: isVerified ? 'Oui' : 'Non' },
+    { label: 'Créé le', value: formatDateTime(account?.created_at) },
+  ];
+
+  const handleLogout = async () => {
+    try {
+      await logoutEleve();
+      logout();
+      showToast('success', 'Vous avez été déconnecté avec succès.');
+    } catch {
+      logout();
+      showToast('info', 'Votre session a été fermée.');
+    }
+    navigate('/connexion', { replace: true });
   };
 
   return (
@@ -168,33 +232,69 @@ export default function DashboardPage() {
 
         <div className="max-w-container-max mx-auto px-md py-lg">
           {/* Profile Header */}
-          <section className="tonal-card rounded-xl p-md mb-md flex flex-col md:flex-row items-center gap-md">
+          <section
+            className={`rounded-xl p-md mb-md flex flex-col md:flex-row items-center gap-md border shadow-sm ${
+              isVerified
+                ? 'bg-emerald-50 border-emerald-200'
+                : 'bg-amber-50 border-amber-200'
+            }`}
+          >
             <div className="relative">
-              <div className="w-32 h-32 rounded-full border-4 border-surface-container shadow-sm bg-surface-container-high flex items-center justify-center">
-                <MaterialIcon name="person" className="text-6xl text-on-surface-variant" />
+              {photoUrl ? (
+                <img
+                  src={photoUrl}
+                  alt={displayName}
+                  className="w-32 h-32 rounded-full border-4 border-white shadow-sm object-cover"
+                />
+              ) : (
+                <div className="w-32 h-32 rounded-full border-4 border-white shadow-sm bg-surface-container-high flex items-center justify-center text-secondary">
+                  <span className="font-headline-md text-display-lg">{initials}</span>
+                </div>
+              )}
+              <div
+                className={`absolute bottom-1 right-1 w-7 h-7 rounded-full border-4 border-white flex items-center justify-center ${
+                  isVerified ? 'bg-emerald-500' : 'bg-amber-500'
+                }`}
+              >
+                <MaterialIcon
+                  name={isVerified ? 'verified' : 'schedule'}
+                  className="text-white text-[14px]"
+                />
               </div>
-              <div className="absolute bottom-1 right-1 bg-green-500 w-6 h-6 rounded-full border-4 border-white" />
             </div>
             <div className="flex-grow text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center gap-sm mb-xs">
                 <h2 className="font-display-lg text-headline-md text-on-surface">
-                  Jean-Baptiste Lully
+                  {displayName}
                 </h2>
-                <span className="px-3 py-1 bg-primary-container text-on-primary-container rounded-full font-label-sm text-xs">
-                  PROGRAMME MAESTRO
+                <span
+                  className={`px-3 py-1 rounded-full font-label-sm text-xs inline-flex items-center gap-1 self-center md:self-auto ${
+                    isVerified
+                      ? 'bg-emerald-100 text-emerald-800'
+                      : 'bg-amber-100 text-amber-800'
+                  }`}
+                >
+                  <MaterialIcon
+                    name={isVerified ? 'verified' : 'warning'}
+                    className="text-[14px]"
+                  />
+                  {isVerified ? 'Compte vérifié' : 'Compte en attente'}
                 </span>
               </div>
               <p className="font-body-md text-on-surface-variant max-w-2xl mb-sm">
-                Étudiant senior en Composition & Orchestration. Lauréat du Mérite de l'Académie
-                Royale 2024 pour l'excellence baroque.
+                {isVerified
+                  ? 'Votre compte est vérifié. Vous pouvez accéder à votre portail et consulter vos informations personnelles en toute sécurité.'
+                  : 'Votre compte n\u2019est pas encore vérifié. Certaines fonctionnalités peuvent rester limitées jusqu\u2019à validation.'}
               </p>
               <div className="flex flex-wrap justify-center md:justify-start gap-xs">
                 <span className="flex items-center gap-1 font-label-sm text-secondary">
-                  <MaterialIcon name="verified" className="text-sm" /> Identité Vérifiée
+                  <MaterialIcon name={isVerified ? 'verified' : 'info'} className="text-sm" />
+                  {isVerified ? 'Identité vérifiée' : 'Identité en cours de vérification'}
                 </span>
                 <span className="mx-2 text-outline">|</span>
                 <span className="flex items-center gap-1 font-label-sm text-on-surface-variant">
-                  <MaterialIcon name="event" className="text-sm" /> Inscrit depuis 2022
+                  <MaterialIcon name="event" className="text-sm" />
+                  Inscrit le {formatDate(account?.created_at)}
                 </span>
               </div>
             </div>
@@ -209,137 +309,77 @@ export default function DashboardPage() {
           <div className="bg-surface-container-low border border-outline-variant px-md py-sm rounded-lg flex items-center gap-sm mb-md">
             <MaterialIcon name="lock" className="text-primary" />
             <p className="font-label-sm text-on-surface-variant">
-              Vos données étudiantes sont chiffrées et protégées conformément aux réglementations
-              nationales sur la vie privée. Seul le personnel autorisé peut consulter votre
-              parcours académique détaillé.
+              Vos données étudiantes sont récupérées depuis votre session sécurisée HttpOnly.
+              Seul le personnel autorisé peut accéder à votre dossier complet.
             </p>
           </div>
 
           {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-md">
-            <div className="md:col-span-4 tonal-card rounded-xl p-md">
-              <div className="flex items-center gap-sm mb-md">
-                <MaterialIcon name="person" className="text-secondary" />
-                <h3 className="font-headline-sm text-headline-sm text-on-surface">
-                  Identité Personnelle
-                </h3>
-              </div>
-              <div className="space-y-md">
-                {IDENTITY.map((item) => (
-                  <div key={item.label}>
-                    <p className="font-label-sm text-on-surface-variant uppercase tracking-wider">
-                      {item.label}
-                    </p>
-                    <p className="font-body-md text-on-surface font-semibold">{item.value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="md:col-span-4 tonal-card rounded-xl p-md">
-              <div className="flex items-center gap-sm mb-md">
-                <MaterialIcon name="contact_mail" className="text-secondary" />
-                <h3 className="font-headline-sm text-headline-sm text-on-surface">
-                  Coordonnées
-                </h3>
-              </div>
-              <div className="space-y-md">
-                {CONTACT.map((item) => (
-                  <div key={item.label}>
-                    <p className="font-label-sm text-on-surface-variant uppercase tracking-wider">
-                      {item.label}
-                    </p>
-                    <p
-                      className={
-                        item.highlight
-                          ? 'font-body-md text-secondary underline'
-                          : 'font-body-md text-on-surface whitespace-pre-line'
-                      }
-                    >
-                      {item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="md:col-span-4 tonal-card rounded-xl p-md">
-              <div className="flex items-center gap-sm mb-md">
-                <MaterialIcon name="history_edu" className="text-secondary" />
-                <h3 className="font-headline-sm text-headline-sm text-on-surface">
-                  Parcours Académique
-                </h3>
-              </div>
-              <div className="relative pl-6 space-y-md">
-                <div className="absolute left-2 top-2 bottom-2 w-0.5 bg-outline-variant" />
-                {ACADEMIC_PATH.map((step) => (
-                  <div key={step.title} className="relative">
-                    <div
-                      className={`absolute -left-[1.35rem] top-1.5 w-3 h-3 rounded-full border-2 border-white ${
-                        step.current ? 'bg-secondary' : 'bg-outline'
-                      }`}
-                    />
-                    <p
-                      className={
-                        step.current
-                          ? 'font-label-sm text-secondary font-bold'
-                          : 'font-label-sm text-on-surface-variant'
-                      }
-                    >
-                      {step.period}
-                    </p>
-                    <p className="font-body-md text-on-surface font-semibold">{step.title}</p>
-                    <p className="font-label-sm text-on-surface-variant">{step.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <InfoCard icon="person" title="Identité personnelle" items={identityItems} />
+            <InfoCard icon="contact_mail" title="Coordonnées" items={contactItems} />
+            <InfoCard icon="family_restroom" title="Responsable / parent" items={familyItems} />
 
             <div className="md:col-span-12 tonal-card rounded-xl p-md">
-              <h3 className="font-headline-sm text-headline-sm text-on-surface mb-lg">
-                Prochaine Inscription aux Performances
-              </h3>
-              <div className="flex flex-col md:flex-row justify-between items-center gap-md px-lg">
-                {REGISTRATION_STEPS.map((step, index) => (
-                  <div
-                    key={step.label}
-                    className={`flex flex-col items-center gap-2 relative ${
-                      index < REGISTRATION_STEPS.length - 1 ? '' : ''
-                    }`}
-                  >
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                        step.state === 'done'
-                          ? 'bg-secondary text-on-secondary'
-                          : step.state === 'active'
-                            ? 'bg-secondary-container text-on-secondary-container border-2 border-secondary'
-                            : 'bg-surface-container-high text-on-surface-variant'
+              <div className="flex items-center gap-sm mb-md">
+                <MaterialIcon name="verified_user" className="text-secondary" />
+                <h3 className="font-headline-sm text-headline-sm text-on-surface">
+                  Statut du compte
+                </h3>
+              </div>
+
+              <div
+                className={`rounded-xl border p-md flex flex-col md:flex-row md:items-center gap-md ${
+                  isVerified
+                    ? 'bg-emerald-50 border-emerald-200'
+                    : 'bg-amber-50 border-amber-200'
+                }`}
+              >
+                <div
+                  className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 ${
+                    isVerified ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                  }`}
+                >
+                  <MaterialIcon name={isVerified ? 'verified' : 'hourglass_top'} className="text-3xl" />
+                </div>
+
+                <div className="flex-grow">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 mb-xs">
+                    <h4 className="font-headline-sm text-headline-sm text-on-surface">
+                      {isVerified ? 'Compte vérifié' : 'Compte en attente de validation'}
+                    </h4>
+                    <span
+                      className={`px-3 py-1 rounded-full font-label-sm text-xs inline-flex items-center gap-1 w-fit ${
+                        isVerified
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : 'bg-amber-100 text-amber-800'
                       }`}
                     >
-                      {step.state === 'done' ? (
-                        <MaterialIcon name="check" />
-                      ) : (
-                        step.number
-                      )}
-                    </div>
-                    <p
-                      className={
-                        step.state === 'active'
-                          ? 'font-label-md text-secondary'
-                          : step.state === 'done'
-                            ? 'font-label-md text-on-surface'
-                            : 'font-label-md text-on-surface-variant'
-                      }
-                    >
-                      {step.label}
-                    </p>
-                    {index < REGISTRATION_STEPS.length - 1 && (
-                      <div
-                        className={`hidden md:block absolute left-full top-5 w-32 h-0.5 mx-2 ${
-                          step.state === 'done' ? 'bg-secondary' : 'bg-outline-variant'
-                        }`}
+                      <MaterialIcon
+                        name={isVerified ? 'check_circle' : 'warning'}
+                        className="text-[14px]"
                       />
-                    )}
+                      {isVerified ? 'Actif' : 'À vérifier'}
+                    </span>
+                  </div>
+
+                  <p className="font-body-md text-on-surface-variant max-w-3xl">
+                    {isVerified
+                      ? 'Votre dossier est validé. Le portail vous reconnaît comme un compte fiable et vous donne accès aux fonctionnalités protégées.'
+                      : 'Votre dossier n\u2019est pas encore validé. Une fois la validation effectuée, votre compte passera au statut vérifié.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-md mt-md">
+                {accountItems.map((item) => (
+                  <div key={item.label} className="bg-white rounded-lg border border-outline-variant p-sm">
+                    <p className="font-label-sm text-on-surface-variant uppercase tracking-wider">
+                      {item.label}
+                    </p>
+                    <p className="font-body-md text-on-surface font-semibold break-words">
+                      {formatValue(item.value)}
+                    </p>
                   </div>
                 ))}
               </div>

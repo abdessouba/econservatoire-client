@@ -21,9 +21,6 @@ export function validateRegistration(form) {
   if (form.nomAr && form.nomAr.length > 100)
     errors.nomAr = 'Ce champ ne doit pas dépasser 100 caractères.';
 
-  if (form.nomPrenomAr && form.nomPrenomAr.length > 200)
-    errors.nomPrenomAr = 'Ce champ ne doit pas dépasser 200 caractères.';
-
   if (isBlank(form.sexe)) errors.sexe = 'Le sexe est obligatoire.';
 
   if (isBlank(form.dateNaissance)) {
@@ -130,7 +127,6 @@ const BACKEND_TO_FORM_FIELD = {
   fixe: 'fixe',
   email: 'email',
   identifiant_unique: 'identifiantUnique',
-  nom_prenom_ar: 'nomPrenomAr',
   password: 'password',
   photo: 'photo',
   profile: 'profile',

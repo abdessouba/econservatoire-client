@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TopNavBar from '../../components/layout/TopNavBar';
 import Footer from '../../components/layout/Footer';
 import PrivacyBanner from '../../components/ui/PrivacyBanner';
@@ -16,6 +16,7 @@ import { validateRegistration, mapBackendFieldErrors } from '../../utils/validat
 import { registerEleve } from '../../api/eleveService';
 import { getPaysList } from '../../api/paysService';
 import { parseApiError } from '../../api/apiError';
+import { useToast } from '../../context/ToastContext';
 
 const STEP_FIELDS = {
   1: ['nom', 'prenom', 'nomAr', 'prenomAr', 'sexe', 'dateNaissance', 'lieuNaissance', 'payId'],
@@ -33,6 +34,7 @@ function stepOfField(field) {
 
 export default function RegistrationPage() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [form, setForm, clearDraft] = useDraftState(DRAFT_KEY, INITIAL_REGISTRATION_FORM, [
     'password',
     'confirmPassword',
@@ -101,7 +103,11 @@ export default function RegistrationPage() {
     const stepErrors = Object.fromEntries(
       Object.entries(allErrors).filter(([field]) => fieldsForStep.includes(field)),
     );
-    setErrors((prev) => ({ ...prev, ...stepErrors, ...Object.fromEntries(fieldsForStep.filter((f) => !stepErrors[f]).map((f) => [f, undefined])) }));
+    setErrors((prev) => ({
+      ...prev,
+      ...stepErrors,
+      ...Object.fromEntries(fieldsForStep.filter((f) => !stepErrors[f]).map((f) => [f, undefined])),
+    }));
     return Object.keys(stepErrors).length === 0;
   };
 
@@ -121,7 +127,6 @@ export default function RegistrationPage() {
     e.preventDefault();
     setAlert(null);
 
-    
     const validationErrors = validateRegistration(form);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -137,14 +142,11 @@ export default function RegistrationPage() {
     setSubmitting(true);
     try {
       const payload = toEleveRequest(form);
-      console.log(payload)
       const response = await registerEleve(payload);
-      setAlert({ type: 'success', message: response?.message || 'Inscription réussie !' });
       clearDraft();
       const email = form.email;
-      setTimeout(() => {
-        navigate('/verification-email', { state: { email } });
-      }, 800);
+      showToast('success', response?.message || 'Inscription réussie !');
+      navigate('/verification-email', { state: { email } });
     } catch (err) {
       const parsed = parseApiError(err);
       if (parsed.type === 'validation') {
@@ -169,12 +171,12 @@ export default function RegistrationPage() {
           { label: 'Performances', to: '#' },
         ]}
         right={
-          <a
-            href="/connexion"
+          <Link
+            to="/connexion"
             className="bg-secondary text-on-secondary px-sm py-xs rounded font-label-md text-label-md hover:opacity-90 transition-opacity"
           >
             Connexion Sécurisée
-          </a>
+          </Link>
         }
       />
       <main ref={formTopRef} className="max-w-container-max mx-auto px-md py-lg flex-grow w-full">
